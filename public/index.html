@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verdant & Co — Support Desk</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="shell">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-icon">🌿</div>
+          <div>
+            <div class="logo-name">Verdant & Co</div>
+            <div class="logo-sub">Support Desk</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-view="customer">
+            <span class="nav-icon">💬</span> Customer Portal
+          </button>
+          <button class="nav-item" data-view="agent">
+            <span class="nav-icon">🛡️</span> Agent Dashboard
+          </button>
+          <button class="nav-item" data-view="analytics">
+            <span class="nav-icon">📊</span> Analytics
+          </button>
+          <button class="nav-item" data-view="webhook">
+            <span class="nav-icon">🔗</span> Webhook Tester
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="ai-badge">
+            <span class="ai-dot"></span> AI Engine Active
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1 class="page-title" id="pageTitle">Customer Portal</h1>
+            <span class="page-sub" id="pageSub">Send messages and view approved replies</span>
+          </div>
+          <div class="topbar-right">
+            <div class="stat-pill" id="statPill">
+              <span id="statCount">0</span> conversations
+            </div>
+            <div class="agent-status" id="agentStatusBadge">
+              <span class="status-dot offline"></span> Agent offline
+            </div>
+          </div>
+        </header>
+
+        <!-- Stats Row (Agent/Analytics) -->
+        <div class="stats-row hidden" id="statsRow">
+          <div class="stat-card">
+            <div class="stat-icon">💬</div>
+            <div class="stat-info">
+              <div class="stat-num" id="statTotal">0</div>
+              <div class="stat-label">Total Conversations</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-info">
+              <div class="stat-num" id="statOpen">0</div>
+              <div class="stat-label">Open</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🤖</div>
+            <div class="stat-info">
+              <div class="stat-num" id="statDrafts">0</div>
+              <div class="stat-label">AI Drafts Pending</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-info">
+              <div class="stat-num" id="statFlagged">0</div>
+              <div class="stat-label">Flagged</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOMER VIEW -->
+        <section id="customerView" class="view active">
+          <div class="two-col">
+            <div class="card">
+              <div class="card-header">
+                <span>Select Customer</span>
+                <select id="customerSelect" class="inline-select"></select>
+              </div>
+              <div class="message-box" id="customerMessages">
+                <div class="empty-state">No messages yet. Send one below!</div>
+              </div>
+              <div class="composer">
+                <div class="composer-ai-hint" id="aiHint"></div>
+                <textarea id="customerInput" rows="3" placeholder="Type your support message..."></textarea>
+                <div class="composer-actions">
+                  <button class="btn-ghost" id="aiSuggestBtn">🤖 AI Suggest</button>
+                  <button class="btn-primary" id="sendCustomerMessage">Send Message</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Assistant Panel -->
+            <div class="card ai-panel">
+              <div class="card-header">🤖 AI Assistant</div>
+              <div class="ai-features">
+                <div class="ai-feature-block">
+                  <div class="ai-feature-title">Quick Topics</div>
+                  <div class="quick-chips">
+                    <button class="chip" data-msg="What is the shipping time for my order?">📦 Shipping</button>
+                    <button class="chip" data-msg="I want to return my product.">↩️ Return</button>
+                    <button class="chip" data-msg="When will I get my refund?">💰 Refund</button>
+                    <button class="chip" data-msg="Is COD available for my order?">💵 COD</button>
+                    <button class="chip" data-msg="I need to change my delivery address.">📍 Address</button>
+                    <button class="chip" data-msg="Can you deliver to Dubai?">✈️ Dubai</button>
+                  </div>
+                </div>
+                <div class="ai-feature-block">
+                  <div class="ai-feature-title">Sentiment Analyzer</div>
+                  <div class="sentiment-box" id="sentimentBox">
+                    <div class="sentiment-empty">Type a message to analyze sentiment</div>
+                  </div>
+                </div>
+                <div class="ai-feature-block">
+                  <div class="ai-feature-title">AI Preview</div>
+                  <div class="ai-preview-box" id="aiPreviewBox">
+                    <div class="sentiment-empty">AI draft will appear here</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- AGENT VIEW -->
+        <section id="agentView" class="view hidden">
+          <!-- Login -->
+          <div id="agentLoginBox" class="login-card">
+            <div class="login-icon">🛡️</div>
+            <h2>Agent Sign In</h2>
+            <p class="login-sub">Verdant & Co Support Portal</p>
+            <label>Email<input id="agentEmail" type="email" value="admin@verdant.test" /></label>
+            <label>Password<input id="agentPassword" type="password" value="verdant123" /></label>
+            <button id="agentLoginBtn" class="btn-primary full-width">Sign In</button>
+            <div class="login-hint">Demo: admin@verdant.test / verdant123</div>
+          </div>
+
+          <!-- Workspace -->
+          <div id="agentWorkspace" class="hidden">
+            <div class="agent-layout">
+              <aside class="conv-sidebar">
+                <div class="conv-sidebar-header">
+                  <span>Conversations</span>
+                  <button class="btn-ghost small" id="refreshConvBtn">↻ Refresh</button>
+                </div>
+                <div id="conversationList" class="conv-list"></div>
+              </aside>
+              <div class="conv-main">
+                <div id="conversationHeader" class="conv-header"></div>
+                <div id="agentConversationMessages" class="message-box agent-msg-box"></div>
+              </div>
+              <div class="agent-ai-panel">
+                <div class="card-header">🤖 Agent AI Tools</div>
+                <div class="ai-feature-block">
+                  <div class="ai-feature-title">Tone Adjuster</div>
+                  <div class="tone-btns">
+                    <button class="tone-btn" data-tone="formal">Formal</button>
+                    <button class="tone-btn" data-tone="friendly">Friendly</button>
+                    <button class="tone-btn" data-tone="empathetic">Empathetic</button>
+                  </div>
+                </div>
+                <div class="ai-feature-block">
+                  <div class="ai-feature-title">Smart Summary</div>
+                  <div class="summary-box" id="summaryBox">Select a conversation to see AI summary</div>
+                </div>
+                <div class="ai-feature-block">
+                  <div class="ai-feature-title">Response Quality</div>
+                  <div class="quality-box" id="qualityBox">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ANALYTICS VIEW -->
+        <section id="analyticsView" class="view hidden">
+          <div class="analytics-grid">
+            <div class="card full-width">
+              <div class="card-header">📊 Conversation Analytics</div>
+              <div class="chart-area" id="chartArea"></div>
+            </div>
+            <div class="card">
+              <div class="card-header">🤖 AI Performance</div>
+              <div class="ai-stats" id="aiStats"></div>
+            </div>
+            <div class="card">
+              <div class="card-header">📋 Recent Activity</div>
+              <div id="recentActivity" class="activity-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WEBHOOK VIEW -->
+        <section id="webhookView" class="view hidden">
+          <div class="two-col">
+            <div class="card">
+              <div class="card-header">🔗 Webhook Tester</div>
+              <div class="webhook-form">
+                <label>Event ID
+                  <input id="whEventId" type="text" placeholder="evt_001" />
+                </label>
+                <label>Customer Name
+                  <input id="whName" type="text" placeholder="Sara Ahmed" />
+                </label>
+                <label>Customer Phone
+                  <input id="whPhone" type="text" placeholder="+971501234567" />
+                </label>
+                <label>Message
+                  <textarea id="whMessage" rows="3" placeholder="I want to track my order..."></textarea>
+                </label>
+                <button class="btn-primary" id="sendWebhookBtn">Send Signed Webhook</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">📨 Webhook Response</div>
+              <pre id="webhookResponse" class="response-pre">Response will appear here...</pre>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
